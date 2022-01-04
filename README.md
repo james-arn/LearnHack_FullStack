@@ -10,6 +10,6 @@ How to Install and Run the Project
 - Hosted on Firebase: https://workhack-1b86b.web.app/
 - Clone the repo and run npm i to install dependencies.
 - Please run npm start to run locally.
-- npm test is used for testing
+- Please run npm test for unit tests with Jest and npm run cypress:open for Cypress end-to-end testing.
 
 
