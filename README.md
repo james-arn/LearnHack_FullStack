@@ -2,7 +2,7 @@ Hosted on Firebase: https://workhack-1b86b.web.app/
 
 ![1](https://user-images.githubusercontent.com/90621208/148041800-f1866941-6769-4f4d-a92d-2188d747a225.jpg)
 
-![2](https://user-images.githubusercontent.com/90621208/148041949-e9455ec4-fb59-46e3-b014-0d2030811354.jpg)
+![Papercraft Mindmap Brainstorm Presentation](https://user-images.githubusercontent.com/90621208/148044286-4fe08886-84fd-4968-872c-9089ed12b3ef.jpg)
 
 How to Install and Run the Project
 
