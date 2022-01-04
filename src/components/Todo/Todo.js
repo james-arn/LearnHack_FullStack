@@ -78,6 +78,7 @@ const Todo = ({
                   <TiTick
                     size={40}
                     className="fill-green-700 hover:fill-green-500"
+                    data-testid="tick-button"
                   />
                 </button>
                 <button
@@ -89,6 +90,7 @@ const Todo = ({
                   <ImCross
                     size={20}
                     className="fill-red-700 hover:fill-red-500 mr-1"
+                    data-testid="cross-button"
                   />
                 </button>
               </>
@@ -97,6 +99,8 @@ const Todo = ({
                 <IoIosAddCircle
                   size={60}
                   className="fill-green-700 hover:fill-green-500"
+                  data-testid="add-button"
+                  aria-labelledby="add-button"
                 />
               </button>
             )}
@@ -107,13 +111,18 @@ const Todo = ({
                 <li className="w-full text-xl" key={todos.uuid}>
                   {todo.todo}
                 </li>
-                <button onClick={() => handleUpdate(todo)}>
+                <button
+                  onClick={() => handleUpdate(todo)}
+                  data-testid="fill-button"
+                  aria-labelledby="fill-button"
+                  id="fill-button"
+                >
                   <AiFillEdit
                     size={30}
                     className="fill-purple-700 hover:fill-purple-500"
                   />
                 </button>
-                <button onClick={() => handleDelete(todo)}>
+                <button id="delete-button" onClick={() => handleDelete(todo)}>
                   <AiOutlineDelete
                     size={30}
                     className="fill-neutral-500 hover:fill-purple-400"
