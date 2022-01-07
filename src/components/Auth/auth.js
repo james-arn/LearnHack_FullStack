@@ -11,36 +11,49 @@ const Auth = ({
   setEmail,
   password,
   setPassword,
-  isSignedUp,
-  setIsSignedUp,
-  user,
+  isRegistering,
+  setIsRegistering,
+  registerInformation,
+  setRegisterInformation,
 }) => {
   let navigate = useNavigate();
 
   const handleEmailChange = (e) => {
-    return setEmail(e.target.value);
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
-    return setPassword(e.target.value);
+    setPassword(e.target.value);
   };
 
-  const signIn = async () => {
+  const handleSignIn = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setEmail("");
       setPassword("");
+      setRegisterInformation("");
       navigate("/todo");
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const register = async () => {
+  const handleRegister = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      if (
+        registerInformation.password !== registerInformation.confirmPassword
+      ) {
+        alert("Passwords do not match, please try again");
+        return;
+      }
+      await createUserWithEmailAndPassword(
+        auth,
+        registerInformation.email,
+        registerInformation.password
+      );
       setEmail("");
       setPassword("");
+      setRegisterInformation("");
       navigate("/todo");
     } catch (error) {
       console.log(error);
@@ -52,11 +65,11 @@ const Auth = ({
       <div className="bg-white p-8 rounded shadow-2xl w-680px">
         <Navbar />
         <div>
-          {isSignedUp ? (
+          {isRegistering ? (
             <div>
               <div className="flex items-center justify-center">
                 <h2 className=" text-3xl font-bold mb-6 underline decoration-purple-800 underline-offset-2">
-                  Sign up
+                  Register
                 </h2>
               </div>
               <div className="space-y-4">
@@ -64,32 +77,56 @@ const Auth = ({
                   <input
                     className="w-full border-2 border-grey-200 mb-1 p-3 rounded-lg outline-none focus:border-purple-500"
                     type="email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    value={registerInformation.email}
                     placeholder="Email"
+                    onChange={(e) =>
+                      setRegisterInformation({
+                        ...registerInformation,
+                        email: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div>
                   <input
-                    className="w-full border-2 border-grey-200 mb-5 p-3 rounded-lg outline-none focus:border-purple-500"
+                    className="w-full border-2 border-grey-200 mb-1 p-3 rounded-lg outline-none focus:border-purple-500"
                     type="password"
-                    value={password}
+                    value={registerInformation.password}
                     placeholder="Password"
-                    onChange={handlePasswordChange}
+                    onChange={(e) =>
+                      setRegisterInformation({
+                        ...registerInformation,
+                        password: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <input
+                    className="w-full border-2 border-grey-200 mb-1 p-3 rounded-lg outline-none focus:border-purple-500"
+                    type="password"
+                    value={registerInformation.confirmPassword}
+                    placeholder="Confirm Password"
+                    onChange={(e) =>
+                      setRegisterInformation({
+                        ...registerInformation,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                   />
                 </div>
 
                 <button
                   className="w-full text-lg bg-purple-800 text-white p-4 rounded-lg hover:bg-purple-600 transition duration-300"
-                  onClick={register}
+                  onClick={handleRegister}
                 >
-                  Sign up
+                  Register
                 </button>
 
                 <div className="flex items-center justify-center">
                   <button
                     className="underline text-blue-500"
-                    onClick={() => setIsSignedUp(false)}
+                    onClick={() => setIsRegistering(false)}
                   >
                     Need to log in instead?
                   </button>
@@ -115,7 +152,7 @@ const Auth = ({
                 </div>
                 <div>
                   <input
-                    className="w-full border-2 border-grey-200 mb-5 p-3 rounded-lg outline-none focus:border-purple-500"
+                    className="w-full border-2 border-grey-200 mb-1 p-3 rounded-lg outline-none focus:border-purple-500"
                     type="password"
                     value={password}
                     placeholder="Password"
@@ -124,7 +161,7 @@ const Auth = ({
                 </div>
                 <button
                   className="w-full text-lg bg-purple-800 text-white p-4 rounded-lg hover:bg-purple-600 transition duration-300"
-                  onClick={signIn}
+                  onClick={handleSignIn}
                 >
                   Log in
                 </button>
@@ -132,7 +169,7 @@ const Auth = ({
                   <div className="flex items-center justify-center">
                     <button
                       className="underline text-blue-500"
-                      onClick={() => setIsSignedUp(true)}
+                      onClick={() => setIsRegistering(true)}
                     >
                       Need to register?
                     </button>

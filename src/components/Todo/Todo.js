@@ -1,5 +1,5 @@
 //firebase
-import { db } from "../../config/firebase/firebase";
+import { auth, db } from "../../config/firebase/firebase";
 import { uid } from "uid";
 import { set, ref, remove, update } from "firebase/database";
 //components
@@ -16,33 +16,22 @@ const Todo = ({
   todos,
   isEdit,
   setIsEdit,
-  tempUuid,
-  setTempUuid,
+  tempUidd,
+  setTempUidd,
 }) => {
-  const handleSubmitChange = () => {
-    update(ref(db, `/${tempUuid}`), {
-      todo,
-      uuID: tempUuid,
-    });
-    setTodo("");
-    setIsEdit(false);
-  };
-
+  //CREATE
   //logs typed input for todo
   const handleToDoChange = (e) => {
     setTodo(e.target.value);
   };
 
-  //CREATE
   // firebase funcitons - set creates object to database. ref is what refering to (just imported db).
-  // npm library uuid is the auto inc key which we refer to when deleting.
+  // npm library uid is the auto inc key which we refer to when deleting.
   const writeToDatabase = () => {
-    const uuid = uid();
-    set(ref(db, `/${uuid}`), {
-      todo,
-      uuid,
-
-      //can put in here completed: false as well.
+    const uidd = uid();
+    set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
+      todo: todo,
+      uidd: uidd,
     });
     setTodo("");
   };
@@ -50,13 +39,23 @@ const Todo = ({
   //UPDATE
   const handleUpdate = (todo) => {
     setIsEdit(true);
-    setTempUuid(todo.uuid);
     setTodo(todo.todo);
+    setTempUidd(todo.uidd);
+  };
+
+  const handleEditConfirm = () => {
+    update(ref(db, `/${auth.currentUser.uid}/${tempUidd}`), {
+      todo: todo,
+      tempUidd: tempUidd,
+    });
+
+    setTodo("");
+    setIsEdit(false);
   };
 
   //DELETE
-  const handleDelete = (todo) => {
-    remove(ref(db, `/${todo.uuid}`)); //firebase function remove, ref,
+  const handleDelete = (uid) => {
+    remove(ref(db, `/${auth.currentUser.uid}/${uid}`));
   };
 
   return (
@@ -74,7 +73,7 @@ const Todo = ({
             />
             {isEdit ? (
               <>
-                <button className="ml-2" onClick={handleSubmitChange}>
+                <button className="ml-2" onClick={handleEditConfirm}>
                   <TiTick
                     size={40}
                     className="fill-green-700 hover:fill-green-500"
@@ -108,7 +107,7 @@ const Todo = ({
           <div className="divide-y divide-purple-200">
             {todos.map((todo) => (
               <div className="flex space-y-2 items-baseline">
-                <li className="w-full text-xl" key={todos.uuid}>
+                <li className="w-full text-xl" key={todos.uidd}>
                   {todo.todo}
                 </li>
                 <button
@@ -122,7 +121,10 @@ const Todo = ({
                     className="fill-purple-700 hover:fill-purple-500"
                   />
                 </button>
-                <button id="delete-button" onClick={() => handleDelete(todo)}>
+                <button
+                  id="delete-button"
+                  onClick={() => handleDelete(todo.uidd)}
+                >
                   <AiOutlineDelete
                     size={30}
                     className="fill-neutral-500 hover:fill-purple-400"
