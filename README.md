@@ -6,7 +6,7 @@ Hosted on Firebase: https://workhack-1b86b.web.app/
 
 How to Install and Run the Project
 
-- You can view the hosted github page here:https://james-arn.github.io/workhack_fullstack
+- You can view the hosted github page here: https://james-arn.github.io/workhack_fullstack
 - Hosted on Firebase: https://workhack-1b86b.web.app/
 - Clone the repo and run npm i to install dependencies.
 - Please run npm start to run locally.
